@@ -8,13 +8,13 @@ public class CVFS {
     private Directory workDirectory;
     public CVFS(){
         this.disk =null;
-        this.workDictonary =null;
+        this.workDirectory =null;
     }
 
     //新建盘，默认路径是root
     public void createDisk(int maxsize){
         this.disk = new Disk(maxsize);
-        this.workDictonary = new Directory("root");
+        this.workDirectory = new Directory("root");
     }
     //新建目录
     public void createWorkDirectory(String name){
