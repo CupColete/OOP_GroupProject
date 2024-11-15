@@ -1,11 +1,53 @@
 package hk.edu.polyu.comp.comp2021.cvfs.model;
+import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CVFS {
+    private Disk disk;
+    private Directory workDirectory;
+    public CVFS(){
+        this.disk =null;
+        this.workDictonary =null;
+    }
 
-    public CVFS(){}
+    //新建盘，默认路径是root
+    public void createDisk(int maxsize){
+        this.disk = new Disk(maxsize);
+        this.workDictonary = new Directory("root");
+    }
+    //新建目录
+    public void createWorkDirectory(String name){
+        Directory dir = new Directory(name);
+        if(this.disk.canAddFile(dir)){
+            workDirectory.addFile(dir);
+        }else{
+            throw new RuntimeException("Disk is full");
+        }
+    }
 
+    //删除文件/目录
+    public void deleteFile(String name){
+        File file = workDirectory.getFile(name);
+        if(file != null){
+            workDirectory.removeFile(name);
+            disk.removeFile(name);
+        }else{
+            throw new RuntimeException("File not found");
+        }
+    }
+
+    //改文件名
+    public void rename(String OldName, String NewName){
+        File file = workDirectory.getFile(OldName);
+        if(file != null){
+            file.setName(NewName);
+        }else{
+            throw new RuntimeException("File not found");
+        }
+    }
+
+    //改目录名
 }
 
 class Disk {
@@ -67,7 +109,6 @@ class Disk {
 
 abstract class File {
     protected String name;
-
     public File(String name) {
         this.name = name;
     }
@@ -82,7 +123,7 @@ abstract class File {
 
     public abstract int getSize();
 }
-
+//文件：type，content
 class Document extends File {
     private final String type;
     private final String content;
@@ -107,6 +148,7 @@ class Document extends File {
     }
 }
 
+//Directory，一个Map就是一个目录
 class Directory extends File {
     private final Map<String, File> files;
 
@@ -119,19 +161,15 @@ class Directory extends File {
     public int getSize() {
         return 40 + files.values().stream().mapToInt(File::getSize).sum();
     }
-
     public void addFile(File file) {
         files.put(file.getName(), file);
     }
-
     public void removeFile(String fileName) {
         files.remove(fileName);
     }
-
     public File getFile(String fileName) {
         return files.get(fileName);
     }
-
     public Map<String, File> getFiles() {
         return files;
     }
