@@ -1,7 +1,10 @@
 package hk.edu.polyu.comp.comp2021.cvfs.model;
+import hk.edu.polyu.comp.comp2021.cvfs.command.*;
+
 import java.io.*;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Stack;
 
 //CVFS本体
 
@@ -10,11 +13,17 @@ public class CVFS {
     private Disk currentDisk;
     private Directory currentDirectory;
     private Map<String,Criterion> cri_set;
+    private Stack<command> undoStack;
+    private Stack<command> redoStack;
 
     public CVFS() {
         this.currentDisk = null;
         this.currentDirectory = null;
         this.cri_set= new HashMap<>();
+        this.undoStack = new Stack<>();
+        this.redoStack = new Stack<>();
+        // [REQ10]  Criterion name: IsDocument
+        cri_set.put("IsDocument",null);
 
     }
     // [REQ1] new disk
@@ -23,6 +32,69 @@ public class CVFS {
         this.currentDisk = new Disk(diskSize);
         this.currentDirectory = this.currentDisk.getRootDirectory();
     }
+
+    //[BON2]
+    public Directory getCurrentDirectory() {
+        return currentDirectory;
+    }
+    public void deleteCriterion(String criName) {
+        Criterion cri = cri_set.get(criName);
+        if(cri!=null) {
+            cri_set.remove(criName);
+        }
+    }
+
+    public void undo(){
+        if(!undoStack.isEmpty()) {
+            command command = undoStack.pop();
+            command.undo();
+            redoStack.push(command);
+        }
+    }
+    public void redo(){
+        if(!redoStack.isEmpty()) {
+            command command = redoStack.pop();
+            command.redo();
+            undoStack.push(command);
+        }
+
+    }
+    public void excuteCommand(command cmd){
+        cmd.redo();
+        undoStack.push(cmd);
+        redoStack.clear();
+    }
+    public void NewDocument(String name, String type, String content) {
+        excuteCommand(new NewDocCommand(this, name, type, content));
+    }
+
+    public void NewDirectory(String name) {
+        excuteCommand(new NewDirCommand(this, name));
+    }
+
+    public void DeleteFile(String name) {
+        excuteCommand(new DeleteCommand(this, name));
+    }
+
+    public void RenameFile(String oldName, String newName) {
+        excuteCommand(new RenameCommand(this, oldName, newName));
+    }
+
+    public void ChangeDirectory(String dirName) {
+        excuteCommand(new ChangeDirCommand(this, dirName));
+    }
+
+    public void NewSimpleCri(String criName, String attrName, String op, String val) {
+        excuteCommand(new NewSimpleCriCommand(this, criName, attrName, op, val));
+    }
+
+    public void NewNegation(String criName1, String criName2) {
+        excuteCommand(new NewNegationCommand(this, criName1, criName2));
+    }
+
+
+
+
 
     // [REQ2] new Document
     // Command: newDoc docName docType docContent
@@ -89,7 +161,7 @@ public class CVFS {
     }
     // [REQ9]a simple criterion
     // Command: newSimpleCri criName attrName op val
-    // [REQ10]  Criterion name: IsDocument
+
     public void newCri(String cirName,String attrName,String op,String val) {
         //cirName  exactly two English letters!!!!!!!!!!  todo
         Criterion cri = new Criterion(attrName,op,val);
@@ -198,4 +270,8 @@ public class CVFS {
     public void quit() {
         System.exit(0);
     }
+
+
+
+
 }

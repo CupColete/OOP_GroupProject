@@ -16,19 +16,19 @@ public class CommandHandler {
                 cvfs.newDisk(Integer.parseInt(parts[1]));
                 break;
             case "newDoc":
-                cvfs.newDocument(parts[1], parts[2], parts[3]);
+                cvfs.NewDocument(parts[1], parts[2], parts[3]);
                 break;
             case "newDir":
-                cvfs.newDirectory(parts[1]);
+                cvfs.NewDirectory(parts[1]);
                 break;
             case "delete":
-                cvfs.deleteFile(parts[1]);
+                cvfs.DeleteFile(parts[1]);
                 break;
             case "rename":
-                cvfs.renameFile(parts[1], parts[2]);
+                cvfs.RenameFile(parts[1], parts[2]);
                 break;
             case "changeDir":
-                cvfs.changeDirectory(parts[1]);
+                cvfs.ChangeDirectory(parts[1]);
                 break;
             case "list":
                 cvfs.listFiles();
@@ -46,10 +46,10 @@ public class CommandHandler {
                 cvfs.quit();
                 break;
             case "newSimpleCri":
-                cvfs.newCri(parts[1],parts[2],parts[3],parts[4] );
+                cvfs.NewSimpleCri(parts[1],parts[2],parts[3],parts[4] );
                 break;
             case "newNegation":
-                cvfs.newNegation(parts[1], parts[2]);
+                cvfs.NewNegation(parts[1], parts[2]);
                 break;
             case "newBinaryCri":
                 cvfs.newBinaryCri(parts[1], parts[2], parts[3], parts[4]);
@@ -62,6 +62,12 @@ public class CommandHandler {
                 break;
             case "rSearch":
                 cvfs.rSearch(parts[1]);
+                break;
+            case "undo":
+                cvfs.undo();
+                break;
+            case "redo":
+                cvfs.redo();
                 break;
             default:
                 System.out.println("Unknown command");
