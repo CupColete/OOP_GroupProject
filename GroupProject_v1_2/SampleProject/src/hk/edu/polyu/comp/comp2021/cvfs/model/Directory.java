@@ -46,6 +46,10 @@ public class Directory extends File {
     public File getFile(String name) {
         return files.get(name);
     }
+    //获取所有文件
+    public Map<String, File> getFiles() {
+        return files;
+    }
     //获取父目录
     public Directory getParent() {
         return parent;

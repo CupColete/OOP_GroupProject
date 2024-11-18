@@ -45,6 +45,24 @@ public class CommandHandler {
             case "quit":
                 cvfs.quit();
                 break;
+            case "newSimpleCri":
+                cvfs.newCri(parts[1],parts[2],parts[3],parts[4] );
+                break;
+            case "newNegation":
+                cvfs.newNegation(parts[1], parts[2]);
+                break;
+            case "newBinaryCri":
+                cvfs.newBinaryCri(parts[1], parts[2], parts[3], parts[4]);
+                break;
+            case "printAllCriteria":
+                cvfs.printAllCriteria();
+                break;
+            case "search":
+                cvfs.search(parts[1]);
+                break;
+            case "rSearch":
+                cvfs.rSearch(parts[1]);
+                break;
             default:
                 System.out.println("Unknown command");
         }
