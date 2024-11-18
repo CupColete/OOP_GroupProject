@@ -1,5 +1,6 @@
 package hk.edu.polyu.comp.comp2021.cvfs.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 //Directory -一张HashMap
@@ -9,7 +10,7 @@ import java.util.Map;
 
 
 
-public class Directory extends File {
+public class Directory extends File implements Serializable {
     private Map<String, File> files;
     private Directory parent;
 

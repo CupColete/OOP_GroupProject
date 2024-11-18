@@ -1,4 +1,5 @@
 package hk.edu.polyu.comp.comp2021.cvfs.model;
+import java.io.*;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -173,11 +174,25 @@ public class CVFS {
     // Command: save path
     public void saveDisk(String path) {
         //  save disk logic
+        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path))){
+            oos.writeObject(currentDisk);
+            System.out.println("Disk saved to"+ path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    // [REQ16] loading a virtual disk  from a file on the local file system.
+    // Command: load path
+    public void loadDisk(String path) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path))) {
+            this.currentDisk = (Disk) ois.readObject();
+            this.currentDirectory = currentDisk.getRootDirectory();
+            System.out.println("Disk loaded from " + path);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void loadDisk(String path) {
-        //  load disk logic
-    }
     //[REQ17] Terminate the execution of the system.
     //  Command: quit
     public void quit() {
