@@ -248,17 +248,21 @@ public class CVFS {
         //  save disk logic
         try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path))){
             oos.writeObject(currentDisk);
-            System.out.println("Disk saved to"+ path);
+            oos.writeObject(cri_set);
+            System.out.println("Disk and criteria saved to"+ path);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    //[BON1]  the defined search criteria saved to/loaded from the local file system
+
     // [REQ16] loading a virtual disk  from a file on the local file system.
     // Command: load path
     public void loadDisk(String path) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path))) {
             this.currentDisk = (Disk) ois.readObject();
             this.currentDirectory = currentDisk.getRootDirectory();
+            this.cri_set = (Map<String, Criterion>) ois.readObject();
             System.out.println("Disk loaded from " + path);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

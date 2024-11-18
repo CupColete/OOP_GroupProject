@@ -1,6 +1,8 @@
 package hk.edu.polyu.comp.comp2021.cvfs.model;
 
-public class compositeCriterion extends Criterion {
+import java.io.Serializable;
+
+public class compositeCriterion extends Criterion implements Serializable {
     private Criterion cri1;
     private Criterion cri2;
     private String logicOp;
