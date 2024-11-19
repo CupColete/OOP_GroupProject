@@ -20,6 +20,7 @@ public class Criterion implements Serializable {
             default: return false;
         }
     }
+    
     //检查是否包含字符串
     private boolean evaluateName(File f){
         if(op.equals("contains")) return f.getName().contains(val);

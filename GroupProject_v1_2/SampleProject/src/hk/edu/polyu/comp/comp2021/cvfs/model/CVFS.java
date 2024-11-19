@@ -1,5 +1,5 @@
 package hk.edu.polyu.comp.comp2021.cvfs.model;
-import hk.edu.polyu.comp.comp2021.cvfs.command.*;
+import hk.edu.polyu.comp.comp2021.cvfs.model.command.*;
 
 import java.io.*;
 import java.util.Map;
@@ -210,9 +210,15 @@ public class CVFS {
         if(currentDirectory!=null) {
             int total_f = 0,totalSzie=0;
             for(File f:currentDirectory.getFiles().values()){
-                System.out.println(f.getName()+" "+f.getSize());
-                total_f++;
-                totalSzie+=f.getSize();
+                if(useCriterion(criName,f)) {
+                    total_f++;
+                    totalSzie+=f.getSize();
+                    System.out.print(" ");
+                    System.out.println(f.getName()+" "+f.getSize());
+
+                }
+
+
             }
             System.out.println("Total files: "+total_f+",Total size: "+totalSzie);
         }
@@ -274,7 +280,6 @@ public class CVFS {
     public void quit() {
         System.exit(0);
     }
-
 
 
 
