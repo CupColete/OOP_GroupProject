@@ -14,13 +14,12 @@ public class Criterion implements Serializable {
 
     public boolean evaluate(File f){
         switch(attrName){
-            case "name": return evaluateName(f);
+            case"name": return evaluateName(f);
             case"type": return evluateType(f);
             case"size": return evaluateSize(f);
             default: return false;
         }
     }
-    
     //检查是否包含字符串
     private boolean evaluateName(File f){
         if(op.equals("contains")) return f.getName().contains(val);

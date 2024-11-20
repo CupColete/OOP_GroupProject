@@ -49,6 +49,8 @@ public class CVFS {
             command command = undoStack.pop();
             command.undo();
             redoStack.push(command);
+        }else{
+            System.out.println("Nothing to undo");
         }
     }
     public void redo(){
@@ -56,8 +58,9 @@ public class CVFS {
             command command = redoStack.pop();
             command.redo();
             undoStack.push(command);
+        }else{
+            System.out.println("Nothing to redo");
         }
-
     }
     public void excuteCommand(command cmd){
         cmd.redo();
@@ -102,6 +105,8 @@ public class CVFS {
     public void newDocument(String name, String type, String content) {
         if (currentDirectory != null) {
             currentDirectory.addFile(new Document(name, type, content));
+        } else {
+            System.out.println("Current directory or disk is null");
         }
     }
 
@@ -110,6 +115,8 @@ public class CVFS {
     public void newDirectory(String name) {
         if (currentDirectory != null) {
             currentDirectory.addFile(new Directory(name));
+        } else {
+            System.out.println("Current directory or disk is null");
         }
     }
 
@@ -118,6 +125,8 @@ public class CVFS {
     public void deleteFile(String name) {
         if (currentDirectory != null) {
             currentDirectory.deleteFile(name);
+        } else {
+            System.out.println("Current directory or disk is null");
         }
     }
     // [REQ5]  rename File
@@ -125,6 +134,8 @@ public class CVFS {
     public void renameFile(String oldName, String newName) {
         if (currentDirectory != null) {
             currentDirectory.renameFile(oldName, newName);
+        } else {
+            System.out.println("Current directory or disk is null");
         }
     }
 
@@ -142,6 +153,8 @@ public class CVFS {
                     currentDirectory = (Directory) file;
                 }
             }
+        } else {
+            System.out.println("Current directory or disk is null");
         }
     }
 
@@ -150,6 +163,8 @@ public class CVFS {
     public void listFiles() {
         if (currentDirectory != null) {
             currentDirectory.listFiles();
+        } else {
+            System.out.println("Current directory or disk is null");
         }
     }
     //[REQ8]extends list function and Use indentation to indicate the level of each file in directory
@@ -157,15 +172,19 @@ public class CVFS {
     public void rListFiles() {
         if (currentDirectory != null) {
             currentDirectory.rListFiles();
+        } else {
+            System.out.println("Current directory or disk is null");
         }
     }
     // [REQ9]a simple criterion
     // Command: newSimpleCri criName attrName op val
 
-    public void newCri(String cirName,String attrName,String op,String val) {
-        //cirName  exactly two English letters!!!!!!!!!!  todo
-        Criterion cri = new Criterion(attrName,op,val);
-        cri_set.put(cirName,cri);
+    public void newCri(String cirName, String attrName, String op, String val) {
+        if (!cirName.matches("^[A-Za-z]{2}$")) {
+            throw new IllegalArgumentException("cirName must be exactly two English letters.");
+        }
+        Criterion cri = new Criterion(attrName, op, val);
+        cri_set.put(cirName, cri);
     }
     public boolean useCriterion(String cirName,File f) {
         Criterion cri = cri_set.get(cirName);
@@ -180,7 +199,9 @@ public class CVFS {
         Criterion cri2 = cri_set.get(criName2);
         if (cri2 != null) {
             compositeCriterion compositeCri = new compositeCriterion(criName1, cri2, null, null, true);
-            cri_set.put(criName2,compositeCri);
+            cri_set.put(criName1,compositeCri);
+        } else {
+            System.out.println("Criterion not exist");
         }
     }
     //newBinaryCri
@@ -190,6 +211,8 @@ public class CVFS {
         if(cri3!=null && cri4!=null) {
             compositeCriterion compositeCri = new compositeCriterion(criName1, cri3, cri4, logicOp, false);
             cri_set.put(criName1,compositeCri);
+        } else {
+            System.out.println("Criterion not exist");
         }
     }
     // [REQ12] printing of all defined criteria
@@ -213,14 +236,12 @@ public class CVFS {
                 if(useCriterion(criName,f)) {
                     total_f++;
                     totalSzie+=f.getSize();
-                    System.out.print(" ");
                     System.out.println(f.getName()+" "+f.getSize());
-
                 }
-
-
             }
             System.out.println("Total files: "+total_f+",Total size: "+totalSzie);
+        } else {
+            System.out.println("Current directory or disk is null");
         }
     }
 
@@ -229,6 +250,8 @@ public class CVFS {
     public void rSearch(String criName) {
         if (currentDirectory != null) {
             rSearch(criName, currentDirectory, 0);
+        } else {
+            System.out.println("Current directory or disk is null");
         }
     }
     private void rSearch(String criName, Directory dir, int level) {
@@ -238,10 +261,10 @@ public class CVFS {
                 for (int i = 0; i < level; i++) {
                     System.out.print(" ");
                 }
+                System.out.println(f.getName() + " " + f.getSize());
+                total_f++;
+                totalSzie += f.getSize();
             }
-            System.out.println(f.getName() + " " + f.getSize());
-            total_f++;
-            totalSzie += f.getSize();
 
             if (f instanceof Directory) rSearch(criName, (Directory) f, level + 1);
         }
@@ -255,7 +278,7 @@ public class CVFS {
         try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path))){
             oos.writeObject(currentDisk);
             oos.writeObject(cri_set);
-            System.out.println("Disk and criteria saved to"+ path);
+            System.out.println("Disk and criteria saved to "+ path);
         } catch (IOException e) {
             e.printStackTrace();
         }

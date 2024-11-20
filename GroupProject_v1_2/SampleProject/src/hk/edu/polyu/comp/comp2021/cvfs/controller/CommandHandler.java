@@ -13,22 +13,46 @@ public class CommandHandler {
         String[] parts = command.split(" ");
         switch (parts[0]) {
             case "newDisk":
-                cvfs.newDisk(Integer.parseInt(parts[1]));
+                try {
+                    cvfs.newDisk(Integer.parseInt(parts[1]));
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Invalid arguments");
+                }
                 break;
             case "newDoc":
-                cvfs.NewDocument(parts[1], parts[2], parts[3]);
+                try {
+                    cvfs.NewDocument(parts[1], parts[2], parts[3]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Invalid arguments");
+                }
                 break;
             case "newDir":
-                cvfs.NewDirectory(parts[1]);
+                try {
+                    cvfs.NewDirectory(parts[1]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Invalid arguments");
+                }
                 break;
             case "delete":
-                cvfs.DeleteFile(parts[1]);
+                try {
+                    cvfs.DeleteFile(parts[1]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Invalid arguments");
+                }
                 break;
             case "rename":
-                cvfs.RenameFile(parts[1], parts[2]);
+                try {
+                    cvfs.RenameFile(parts[1], parts[2]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Invalid arguments");
+                }
                 break;
             case "changeDir":
-                cvfs.ChangeDirectory(parts[1]);
+                try {
+                    cvfs.ChangeDirectory(parts[1]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Invalid arguments");
+                }
                 break;
             case "list":
                 cvfs.listFiles();
@@ -37,31 +61,61 @@ public class CommandHandler {
                 cvfs.rListFiles();
                 break;
             case "save":
-                cvfs.saveDisk(parts[1]);
+                try {
+                    cvfs.saveDisk(parts[1]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Invalid arguments");
+                }
                 break;
             case "load":
-                cvfs.loadDisk(parts[1]);
+                try {
+                    cvfs.loadDisk(parts[1]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Invalid arguments");
+                }
                 break;
             case "quit":
                 cvfs.quit();
                 break;
             case "newSimpleCri":
-                cvfs.NewSimpleCri(parts[1],parts[2],parts[3],parts[4] );
+                try {
+                    cvfs.NewSimpleCri(parts[1],parts[2],parts[3],parts[4] );
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Invalid arguments");
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Cri name can only be 2 English letters");
+                }
                 break;
             case "newNegation":
-                cvfs.NewNegation(parts[1], parts[2]);
+                try {
+                    cvfs.NewNegation(parts[1], parts[2]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Invalid arguments");
+                }
                 break;
             case "newBinaryCri":
-                cvfs.newBinaryCri(parts[1], parts[2], parts[3], parts[4]);
+                try {
+                    cvfs.newBinaryCri(parts[1], parts[2], parts[3], parts[4]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Invalid arguments");
+                }
                 break;
             case "printAllCriteria":
                 cvfs.printAllCriteria();
                 break;
             case "search":
-                cvfs.search(parts[1]);
+                try {
+                    cvfs.search(parts[1]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Invalid arguments");
+                }
                 break;
             case "rSearch":
-                cvfs.rSearch(parts[1]);
+                try {
+                    cvfs.rSearch(parts[1]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Invalid arguments");
+                }
                 break;
             case "undo":
                 cvfs.undo();
